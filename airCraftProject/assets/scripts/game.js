@@ -7,6 +7,9 @@ cc.Class({
         bg_1: cc.Node,
         bg_2: cc.Node,
         title: cc.Label,
+        gamePlaying: cc.Node,
+        gamePause: cc.Node,
+        gameReady: cc.Node
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -16,6 +19,9 @@ cc.Class({
         this.bg_1.y = 0;
         this.bg_2.y = this.bg_1.y + this.bg_1.height;
         this.setTouch()
+        this.gameReady.active = true;
+        this.gamePlaying.active = false;
+        this.gamePause.active = false;
     },
 
     start() {
@@ -38,7 +44,8 @@ cc.Class({
         }, this);
         this.node.on("touchend", function (event) {
             cc.log("touchend")
-            this.title.node.active = false;
+            this.gameReady.active = false;
+            this.gamePlaying.active = true;
             this.isBgMove = true;
         }, this)
     },
@@ -50,5 +57,26 @@ cc.Class({
         if (this.bg_2.y <= -this.bg_2.height)
             this.bg_2.y = this.bg_1.y + this.bg_2.height;
 
+    },
+    clickBtn(sender, str) {
+        switch (str) {
+            case "resume":
+                cc.log("resume")
+                this.isBgMove = true;
+                this.gamePause.active = false;
+                this.gamePlaying.active = true;
+                break;
+            case "pause":
+                cc.log("pause")
+                this.gamePause.active = true;
+                this.gamePlaying.active = false;
+                this.isBgMove = false;
+                break;
+
+            case "restart":
+                this.onLoad();
+                cc.log("restart")
+                break;
+        }
     },
 });
