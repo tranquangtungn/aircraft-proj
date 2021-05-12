@@ -24,6 +24,9 @@ cc.Class({
         this.gameReady.active = true;
         this.gamePlaying.active = false;
         this.gamePause.active = false;
+        this.bulletPool = new cc.NodePool();
+        this.bulletTime = 0;
+        this.gameState = 0 //{0:ready , 1:playing, 2:pause, 3:over}
     },
 
     start() {
@@ -34,7 +37,14 @@ cc.Class({
         if (this.isBgMove) {
             this.setBg();
         }
+        this.bulletTime++;
+        if (this.bulletTime == 10) {
+            this.bulletTime = 0;
+            if (this.gameState == 1) {
 
+                this.createBullet();
+            }
+        }
 
     },
     setTouch() {
@@ -52,13 +62,9 @@ cc.Class({
         }, this);
         this.node.on("touchend", function (event) {
             cc.log("touchend")
+            this.gameState = 1;
 
-            let pos = this.hero.getPosition()
-            let bullet = cc.instantiate(this.pre_bullet)
-            bullet.parent = this.node;
-            //cc.log(pos_hero.y)
-            bullet.setPosition(cc.v2(pos.x, pos.y + this.hero.height / 2))
-            cc.log(bullet.getPosition())
+            // cc.log(bullet.getPosition())
         }, this)
     },
     setBg() {
@@ -70,6 +76,22 @@ cc.Class({
             this.bg_2.y = this.bg_1.y + this.bg_2.height;
 
     },
+    createBullet() {
+        let bullet = null;
+        if (this.bulletPool.size() > 0) {
+            bullet = this.bulletPool.get();
+        } else {
+            bullet = cc.instantiate(this.pre_bullet);
+        }
+        let pos = this.hero.getPosition()
+        //bullet = cc.instantiate(this.pre_bullet)
+        bullet.parent = this.node;
+        //cc.log(pos_hero.y)
+        bullet.setPosition(cc.v2(pos.x, pos.y + this.hero.height / 2))
+    },
+    onBulletKilled(bullet) {
+        this.bulletPool.put(bullet);
+    },
     clickBtn(sender, str) {
         switch (str) {
             case "resume":
@@ -77,17 +99,20 @@ cc.Class({
                 this.isBgMove = true;
                 this.gamePause.active = false;
                 this.gamePlaying.active = true;
+                this.gameState = 1;
                 break;
             case "pause":
                 cc.log("pause")
                 this.gamePause.active = true;
                 this.gamePlaying.active = false;
                 this.isBgMove = false;
+                this.gameState = 2;
                 break;
 
             case "restart":
                 this.onLoad();
                 cc.log("restart")
+                this.gameState = 0;
                 break;
         }
     },
