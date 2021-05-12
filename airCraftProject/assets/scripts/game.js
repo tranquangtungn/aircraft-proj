@@ -9,7 +9,9 @@ cc.Class({
         title: cc.Label,
         gamePlaying: cc.Node,
         gamePause: cc.Node,
-        gameReady: cc.Node
+        gameReady: cc.Node,
+        hero: cc.Node,
+        pre_bullet: cc.Prefab
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -38,15 +40,25 @@ cc.Class({
     setTouch() {
         this.node.on("touchstart", function (event) {
             cc.log("touchstart")
-        }, this);
-        this.node.on("touchmove", function (event) {
-            cc.log("touchmove")
-        }, this);
-        this.node.on("touchend", function (event) {
-            cc.log("touchend")
             this.gameReady.active = false;
             this.gamePlaying.active = true;
             this.isBgMove = true;
+        }, this);
+        this.node.on("touchmove", function (event) {
+            // cc.log("touchmove")
+            let pos_hero = this.hero.getPosition()
+            let pos_mov = event.getDelta()
+            this.hero.setPosition(cc.v2(pos_hero.x + pos_mov.x, pos_hero.y + pos_mov.y))
+        }, this);
+        this.node.on("touchend", function (event) {
+            cc.log("touchend")
+
+            let pos = this.hero.getPosition()
+            let bullet = cc.instantiate(this.pre_bullet)
+            bullet.parent = this.node;
+            //cc.log(pos_hero.y)
+            bullet.setPosition(cc.v2(pos.x, pos.y + this.hero.height / 2))
+            cc.log(bullet.getPosition())
         }, this)
     },
     setBg() {
