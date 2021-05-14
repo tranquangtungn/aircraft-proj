@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "heroNormal",
+  "_name": "hero_normal",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.2,
@@ -14,13 +14,13 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "b8145ef1-ce52-4846-9ae0-7a5d2382778e"
+              "__uuid__": "9e2f2d95-588e-4e98-9602-91a8190d7e04"
             }
           },
           {
             "frame": 0.15,
             "value": {
-              "__uuid__": "5db8fdd1-d2f8-4944-9422-f7b6012edf2c"
+              "__uuid__": "45d7c98b-8f2e-4138-97c8-9c1b73e7dc0a"
             }
           }
         ]

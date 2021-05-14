@@ -88,7 +88,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "bc4ca20c-d71b-47cc-9f91-ec025508d0f2"
+      "__uuid__": "958789fd-cf2f-4f44-84fd-916db52f3aac"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -102,7 +102,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "ad845046-5dd1-443d-9e44-737224805cd2"
+      "__uuid__": "6e62e0e6-0c0e-41f3-bfbf-12214870f7d7"
     },
     "_id": ""
   },
@@ -124,7 +124,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "3bc2hbHxRPIqZWl9XgOL1I",
+    "fileId": "abviG2eRVHz6A3Rf+0ysQX",
     "sync": false
   }
 ]

@@ -17,20 +17,14 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.isBgMove = false;
-        this.bg_1.y = 0;
-        this.bg_2.y = this.bg_1.y + this.bg_1.height;
+
         this.setTouch()
-        this.gameReady.active = true;
-        this.gamePlaying.active = false;
-        this.gamePause.active = false;
-        this.bulletPool = new cc.NodePool();
-        this.bulletTime = 0;
-        this.gameState = 0 //{0:ready , 1:playing, 2:pause, 3:over}
+
+
     },
 
     start() {
-
+        this.init();
     },
 
     update(dt) {
@@ -46,6 +40,17 @@ cc.Class({
             }
         }
 
+    },
+    init() {
+        this.isBgMove = false;
+        this.bg_1.y = 0;
+        this.bg_2.y = this.bg_1.y + this.bg_1.height;
+        this.gameReady.active = true;
+        this.gamePlaying.active = false;
+        this.gamePause.active = false;
+        this.bulletPool = new cc.NodePool();
+        this.bulletTime = 0;
+        this.gameState = 0 //{0:ready , 1:playing, 2:pause, 3:over}
     },
     setTouch() {
         this.node.on("touchstart", function (event) {
@@ -110,7 +115,7 @@ cc.Class({
                 break;
 
             case "restart":
-                this.onLoad();
+                this.init();
                 cc.log("restart")
                 this.gameState = 0;
                 break;

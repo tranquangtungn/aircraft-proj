@@ -1,0 +1,58 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "enemy3_down",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.3,
+  "sample": 20,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "fa1936e0-bc48-4ee0-83bd-b36867e39a12"
+            }
+          },
+          {
+            "frame": 0.25,
+            "value": {
+              "__uuid__": "06e61824-8dc8-4b2d-938d-3bff9d7fc65c"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "7212beab-d98c-48bb-b25d-f9d7ccb1e0ca"
+            }
+          },
+          {
+            "frame": 0.75,
+            "value": {
+              "__uuid__": "f2cdd5ac-c817-4957-9e1f-5b12557d5279"
+            }
+          },
+          {
+            "frame": 1,
+            "value": {
+              "__uuid__": "22d9d897-d3aa-49ab-a203-671aaf85a6e5"
+            }
+          },
+          {
+            "frame": 1.25,
+            "value": {
+              "__uuid__": "669bbc9a-0ee2-4698-845d-03f7aeb39f04"
+            }
+          }
+        ]
+      },
+      "cc.PolygonCollider": {
+        "editing": []
+      }
+    }
+  },
+  "events": []
+}

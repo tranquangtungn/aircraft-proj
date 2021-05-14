@@ -1,0 +1,31 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "enemy2_hit",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.3,
+  "sample": 20,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "7bf2c50a-dffa-4639-a233-af5671751891"
+            }
+          },
+          {
+            "frame": 0.25,
+            "value": {
+              "__uuid__": "9c9b67fe-3be4-48aa-871f-e7eaaaea8ddd"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
