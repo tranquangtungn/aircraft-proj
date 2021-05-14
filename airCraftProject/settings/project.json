@@ -3,21 +3,23 @@
   "collision-matrix": [
     [
       false,
+      false
+    ],
+    [
+      false,
+      false,
       true
     ],
     [
+      false,
       true,
-      false
+      false,
+      true
     ],
     [
       false,
       false,
-      false
-    ],
-    [
-      false,
-      false,
-      false,
+      true,
       false
     ]
   ],
@@ -37,10 +39,10 @@
   "fit-height": true,
   "fit-width": false,
   "group-list": [
-    "bullet",
+    "default",
     "hero",
-    "New Group 4",
-    "New Group 5"
+    "enemy",
+    "\bbullet"
   ],
   "last-module-event-record-time": 0,
   "simulator-orientation": false,
@@ -49,6 +51,5 @@
     "width": 960
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }
