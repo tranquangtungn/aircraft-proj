@@ -6,42 +6,37 @@ cc.Class({
         hit_frame: cc.SpriteFrame,
         hp: 5,
         speed: 0,
-        sprite: null,
-        anim_down: null
+        _sprite: null,
+        _anim_down: null
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         //cc.log(this)
-        this.sprite = this.getComponent(cc.Sprite)
+        this._sprite = this.getComponent(cc.Sprite)
         this.colider = this.getComponent(cc.PolygonCollider)
-        this.anim_down = this.getComponent(cc.Animation)
+        this._anim_down = this.getComponent(cc.Animation)
         //cc.log(this.colider)
-        let manager = cc.director.getCollisionManager();
-        manager.enabled = true;
-        // manager.enabledDebugDraw = true;
+
     },
     onCollisionEnter: function (other, self) {
         // cc.log(other.node.group)
         //cc.log(other.node.group)
-        if (other.node.group === "bullet") {
+        if (other.node.group == "bullet") {
             this.hp -= 1;
-            cc.log(this.hp)
-            if (this.sprite.spriteFrame !== this.hit_frame) {
-
-                this.sprite.spriteFrame = this.hit_frame
-
-            }
-            else if (this.hp == 0) {
+            if (this.hp == 0) {
                 //cc.log(this.hp)
                 //cc.log("test")
-                this.anim_down.play()
+                this._anim_down.play(this._anim_down._clips[0]._name)
                 cc.tween(this.node)
                     .delay(1)
                     .call(() => { this.node.active = false; })
                     .start()
-
+            }
+            else if (this._sprite.spriteFrame !== this.hit_frame && this.hp > 0) {
+                this._sprite.spriteFrame = this.hit_frame
+                this._anim_down.stop()
             }
             //cc.log(this.hp)
 
@@ -51,5 +46,7 @@ cc.Class({
 
     },
 
-    // update (dt) {},
+    update(dt) {
+        this.node.y -= this.speed
+    },
 });

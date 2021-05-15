@@ -1,3 +1,4 @@
+const mEmitter = require("mEmitter");
 
 
 cc.Class({
@@ -10,6 +11,7 @@ cc.Class({
         gamePlaying: cc.Node,
         gamePause: cc.Node,
         gameReady: cc.Node,
+        score: cc.Label,
         hero: cc.Node,
         pre_bullet: cc.Prefab
     },
@@ -17,10 +19,12 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-
+        let manager = cc.director.getCollisionManager();
+        manager.enabled = true;
+        // manager.enabledDebugDraw = true;
         this.setTouch()
 
-
+        mEmitter.instance = new mEmitter();
     },
 
     start() {
