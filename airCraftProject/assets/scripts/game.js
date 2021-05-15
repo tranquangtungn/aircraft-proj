@@ -1,5 +1,5 @@
-const mEmitter = require("mEmitter");
-
+const mEmitter = require("./mEmitter");
+const config = require("config");
 
 cc.Class({
     extends: cc.Component,
@@ -19,12 +19,15 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        cc.log(config.event.UPDATE_SCORE)
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
         // manager.enabledDebugDraw = true;
         this.setTouch()
 
         mEmitter.instance = new mEmitter();
+        mEmitter.instance.registerEvent(config.event.UPDATE_SCORE, this.updateScore.bind(this))
+
     },
 
     start() {
@@ -32,13 +35,14 @@ cc.Class({
     },
 
     update(dt) {
+        cc.log(mEmitter.instance._emiter._events)
         if (this.isBgMove) {
             this.setBg();
         }
         this.bulletTime++;
         if (this.bulletTime == 10) {
             this.bulletTime = 0;
-            if (this.gameState == 1) {
+            if (this.gameState == config.gameState.PLAYING) {
 
                 this.createBullet();
             }
@@ -49,12 +53,13 @@ cc.Class({
         this.isBgMove = false;
         this.bg_1.y = 0;
         this.bg_2.y = this.bg_1.y + this.bg_1.height;
+        this.gamePause.zIndex = 2;
         this.gameReady.active = true;
         this.gamePlaying.active = false;
         this.gamePause.active = false;
         this.bulletPool = new cc.NodePool();
         this.bulletTime = 0;
-        this.gameState = 0 //{0:ready , 1:playing, 2:pause, 3:over}
+        this.gameState = config.gameState.READY //{0:ready , 1:playing, 2:pause, 3:over}
     },
     setTouch() {
         this.node.on("touchstart", function (event) {
@@ -71,10 +76,14 @@ cc.Class({
         }, this);
         this.node.on("touchend", function (event) {
             cc.log("touchend")
-            this.gameState = 1;
+            this.gameState = config.gameState.PLAYING;
 
             // cc.log(bullet.getPosition())
         }, this)
+    },
+    updateScore(score) {
+        cc.log("tets")
+        this.score.string = Number(this.score.string) + score
     },
     setBg() {
         this.bg_2.y -= 2;
@@ -101,6 +110,14 @@ cc.Class({
     onBulletKilled(bullet) {
         this.bulletPool.put(bullet);
     },
+    removeAllBullet() {
+        let children = this.node.children
+        for (let i = children.length - 1; i >= 0; i--) {
+            let js = children[i].getComponent("bullet")
+            if (js)
+                this.onBulletKilled(children[i])
+        }
+    },
     clickBtn(sender, str) {
         switch (str) {
             case "resume":
@@ -108,20 +125,24 @@ cc.Class({
                 this.isBgMove = true;
                 this.gamePause.active = false;
                 this.gamePlaying.active = true;
-                this.gameState = 1;
+                this.gameState = config.gameState.PLAYING;
+                mEmitter.instance.emit(config.event.UPDATE_GAMESTATE, this.gameState)
                 break;
             case "pause":
                 cc.log("pause")
                 this.gamePause.active = true;
                 this.gamePlaying.active = false;
                 this.isBgMove = false;
-                this.gameState = 2;
+                this.gameState = config.gameState.PAUSE;
+                mEmitter.instance.emit(config.event.UPDATE_GAMESTATE, this.gameState)
                 break;
 
             case "restart":
                 this.init();
                 cc.log("restart")
-                this.gameState = 0;
+                //this.gamePlaying.active = false;
+                this.gameState = config.gameState.READY;
+                this.removeAllBullet()
                 break;
         }
     },

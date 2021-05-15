@@ -1,19 +1,29 @@
-
+const mEmitter = require("./mEmitter");
+const config = require("./config");
 cc.Class({
     extends: cc.Component,
 
     properties: {
         damage: 1,
-        speed: 5
+        speed: 5,
+        _gameState: config.gameState.PLAYING,
+        _updateGameState: null
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        //cc.log(this.node.y)
         //let manager = cc.director.getCollisionManager();
         //manager.enabled = true;
+        this._updateGameState = this.updateGameState.bind(this)
+        mEmitter.instance.registerEvent(config.event.UPDATE_GAMESTATE, this._updateGameState)
     },
-
+    updateGameState(data) {
+        this._gameState = data
+        //cc.log("change state")
+        // this._anim.stop()
+    },
     start() {
 
     },
@@ -32,6 +42,9 @@ cc.Class({
     },
     update(dt) {
         // cc.log(this.node.y)
-        this.node.y += this.speed;
+        if (this._gameState == config.gameState.PLAYING)
+            this.node.y += this.speed;
+        if (this.node.y >= 460)
+            mEmitter.instance.removeEvent(config.event.UPDATE_GAMESTATE, this._updateGameState)
     },
 });
