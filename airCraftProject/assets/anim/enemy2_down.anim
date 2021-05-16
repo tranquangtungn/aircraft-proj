@@ -3,7 +3,7 @@
   "_name": "enemy2_down",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1.05,
+  "_duration": 0.65,
   "sample": 20,
   "speed": 1,
   "wrapMode": 1,
@@ -18,25 +18,25 @@
             }
           },
           {
-            "frame": 0.25,
+            "frame": 0.15,
             "value": {
               "__uuid__": "2ab6125a-58c0-4b34-a2db-1617006608dc"
             }
           },
           {
-            "frame": 0.5,
+            "frame": 0.3,
             "value": {
               "__uuid__": "78a5dd71-a300-410a-b1ea-254b24211188"
             }
           },
           {
-            "frame": 0.75,
+            "frame": 0.45,
             "value": {
               "__uuid__": "59b1c714-ee67-4b74-a3b4-2dd5aa5d152f"
             }
           },
           {
-            "frame": 1,
+            "frame": 0.6,
             "value": {
               "__uuid__": "59b1c714-ee67-4b74-a3b4-2dd5aa5d152f"
             }

@@ -11,7 +11,12 @@ cc.Class({
         gamePlaying: cc.Node,
         gamePause: cc.Node,
         gameReady: cc.Node,
+        gameOver: cc.Node,
+
         score: cc.Label,
+        scoreOver: cc.Label,
+
+
         pre_hero: cc.Prefab,
         _hero: cc.Node,
 
@@ -28,151 +33,174 @@ cc.Class({
         //cc.log(config.event.UPDATE_SCORE)
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
-        // manager.enabledDebugDraw = true;
+        //manager.enabledDebugDraw = true;
+        this.init();
         this.setTouch()
-        this.spawnHero()
-
 
         mEmitter.instance.registerEvent(config.event.UPDATE_SCORE, this.updateScore.bind(this))
+        mEmitter.instance.registerEvent(config.event.GAME_OVER, this.gameFinished.bind(this))
 
     },
 
     start() {
-        this.init();
+
     },
 
     update(dt) {
-        //cc.log(this.node.children.length)
-        //cc.log(this.gameState)
 
         this.setBg();
+        if (this.gameState == config.gameState.PLAYING) {
+            this.bulletTime++;
 
-        this.bulletTime++;
-        if (this.bulletTime == 10) {
-            this.bulletTime = 0;
-            if (this.gameState == config.gameState.PLAYING) {
-
+            if (this.bulletTime == 10) {
+                this.bulletTime = 0;
                 this.createBullet();
             }
-        }
-        this.spawnCreeps(dt);
-        this.spawnAssassins(dt);
-        this.spawnMotherShips(dt);
-    },
-    spawnCreeps(dt) {
-        this.spawnCreepTime += dt;
-        if (this.spawnCreepTime >= 0.2) {
-            this.spawnCreepTime = 0;
-            if (this.gameState == config.gameState.PLAYING) {
-                this.createEnemy(this.pre_creep)
-            }
-        }
-    },
-    spawnAssassins(dt) {
-        this.spawnAssasinTime += dt;
-        if (this.spawnAssasinTime >= 0.5) {
-            this.spawnAssasinTime = 0;
-            if (this.gameState == config.gameState.PLAYING) {
-                this.createEnemy(this.pre_assassin)
-            }
-        }
-    },
-    spawnMotherShips(dt) {
-        this.spawnMotherShipTime += dt;
-        if (this.spawnMotherShipTime >= 2) {
-            this.spawnMotherShipTime = 0;
-            if (this.gameState == config.gameState.PLAYING) {
-                this.createEnemy(this.pre_motherShip)
-            }
-        }
-    },
-    createEnemy(pre_enemy) {
-        let x = Math.floor(Math.random() * 600) + 1 - 300; // 1-5
-        let y = Math.floor(Math.random() * 900) + 1 + 550; // 1-5
-        let enemy = cc.instantiate(pre_enemy)
-        enemy.parent = this.node
-        enemy.setPosition(cc.v2(x, y))
-        enemy.speed = 10
-    },
-    spawnHero() {
 
-        this._hero = cc.instantiate(this.pre_hero)
-        this._hero.parent = this.node
-        this._hero.setPosition(cc.v2(0, -300))
+            this.spawnCreeps(dt);
+            this.spawnAssassins(dt);
+            this.spawnMotherShips(dt);
+        }
     },
     init() {
         this.isBgMove = false;
         this.bg_1.y = 0;
         this.bg_2.y = this.bg_1.y + this.bg_1.height;
         this.gameReady.zIndex = 1;
+        // this.gameOver.zIndex = -1;
         this.gamePause.zIndex = 2;
+        //this.score.zIndex = 3;
         this.gameReady.active = true;
         this.gamePlaying.active = false;
         this.gamePause.active = false;
+        this.gameOver.active = false;
 
         this.bulletTime = 0;
         this.gameState = config.gameState.READY
 
 
-        this.spawnCreepTime = 0;
-        this.spawnAssasinTime = 0;
-        this.spawnMotherShipTime = 0;
+        this.spawnCreepTime = 0
+        this.spawnAssasinTime = 0
+        this.spawnMotherShipTime = 0
+
+        this.level = 1
+        this.spawnHero()
     },
     setTouch() {
         this.node.on("touchstart", function (event) {
-            cc.log("touchstart")
             this.gameState = config.gameState.PLAYING;
             this.gameReady.active = false;
             this.gamePlaying.active = true;
+            //this.gameOver.active = false;
             this.isBgMove = true;
-
         }, this);
         this.node.on("touchmove", function (event) {
-            // cc.log("touchmove")
-            let pos_hero = this._hero.getPosition()
-            let pos_mov = event.getDelta()
-            this._hero.setPosition(cc.v2(pos_hero.x + pos_mov.x, pos_hero.y + pos_mov.y))
-
+            if (this._hero.name != "") {
+                let pos_hero = this._hero.getPosition()
+                let pos_mov = event.getDelta()
+                this._hero.setPosition(cc.v2(pos_hero.x + pos_mov.x, pos_hero.y + pos_mov.y))
+            }
         }, this);
         this.node.on("touchend", function (event) {
             cc.log("touchend")
-            //this.gameState = config.gameState.PLAYING;
-            // mEmitter.instance.emit(config.event.UPDATE_GAMESTATE, this.gameState)
-            // cc.log(bullet.getPosition())
+
         }, this)
+
+    },
+    gameFinished() {
+        cc.log("test")
+        this.gameState = config.gameState.OVER;
+        this.removeAllBullet()
+        this.removeAllEnemy()
+
+        this.gameOver.active = true;
+        this.scoreOver.string = this.score.string;
+    },
+    spawnCreeps(dt) {
+        this.spawnCreepTime += dt;
+        if (this.spawnCreepTime >= 1 / this.level) {
+            this.spawnCreepTime = 0;
+            this.createEnemy(this.pre_creep, 1)
+        }
+    },
+    spawnAssassins(dt) {
+        this.spawnAssasinTime += dt;
+        if (this.spawnAssasinTime >= 2 / this.level) {
+            this.spawnAssasinTime = 0;
+            this.createEnemy(this.pre_assassin, 2)
+        }
+    },
+    spawnMotherShips(dt) {
+        this.spawnMotherShipTime += dt;
+        if (this.spawnMotherShipTime >= 5 / this.level) {
+            this.spawnMotherShipTime = 0;
+            this.createEnemy(this.pre_motherShip, 0.2)
+        }
+    },
+    createEnemy(pre_enemy, speed) {
+        let x = Math.floor(Math.random() * 600) + 1 - 300; // -300 300
+        let y = Math.floor(Math.random() * 900) + 1 + 550; // 550 1450
+        let enemy = cc.instantiate(pre_enemy)
+        let js = enemy.getComponent("enemy")
+        js.speed = Math.floor(Math.random() * 2) + speed + this.level;
+        enemy.parent = this.node
+        enemy.setPosition(cc.v2(x, y))
+    },
+    spawnHero() {
+        this._hero = cc.instantiate(this.pre_hero)
+        this._hero.parent = this.node
+        this._hero.setPosition(cc.v2(0, -300))
     },
     updateScore(score) {
         //cc.log("tets")
         this.score.string = Number(this.score.string) + score
+        this.updateLevel();
+    },
+    updateLevel() {
+        this.level = Math.floor(this.score.string / 50) + 1;
     },
     setBg() {
         if (this.isBgMove) {
-            this.bg_2.y -= 1;
-            this.bg_1.y -= 1;
+            this.bg_2.y -= 0.5;
+            this.bg_1.y -= 0.5;
             if (this.bg_1.y <= -this.bg_1.height)
                 this.bg_1.y = this.bg_2.y + this.bg_1.height;
             if (this.bg_2.y <= -this.bg_2.height)
                 this.bg_2.y = this.bg_1.y + this.bg_2.height;
         }
-
     },
     createBullet() {
-
-        let pos = this._hero.getPosition()
-        let bullet = cc.instantiate(this.pre_bullet)
-        bullet.parent = this.node;
-        //cc.log(pos_hero.y)
-        bullet.setPosition(cc.v2(pos.x, pos.y + this._hero.height / 2))
+        if (this._hero.name != "") {
+            let pos = this._hero.getPosition()
+            let bullet = cc.instantiate(this.pre_bullet)
+            bullet.parent = this.node;
+            bullet.setPosition(cc.v2(pos.x, pos.y + this._hero.height / 2))
+        }
     },
 
     removeAllBullet() {
-
         let children = this.node.children
-        //cc.log(children)
         for (let i = children.length - 1; i >= 0; i--) {
             let bullet = children[i].getComponent("bullet")
             if (bullet)
                 bullet.onBulletKilled()
+        }
+    },
+    removeAllEnemy() {
+        let children = this.node.children
+        for (let i = children.length - 1; i >= 0; i--) {
+            let enemy = children[i].getComponent("enemy")
+            if (enemy)
+                enemy.onEnemyKilled()
+        }
+    },
+    removeHero() {
+        let children = this.node.children
+        for (let i = children.length - 1; i >= 0; i--) {
+            let enemy = children[i].getComponent("hero")
+            if (enemy) {
+                enemy.onHeroKilled()
+            }
         }
     },
     clickBtn(sender, str) {
@@ -187,19 +215,22 @@ cc.Class({
                 break;
             case "pause":
                 cc.log("pause")
-                this.gamePause.active = true;
+                //this.gameReady.active = false;
                 //this.gamePlaying.active = false;
+                this.gamePause.active = true;
+                //this.gameOver.active = false;
                 this.isBgMove = false;
                 this.gameState = config.gameState.PAUSE;
                 mEmitter.instance.emit(config.event.UPDATE_GAMESTATE, this.gameState)
                 break;
-
             case "restart":
-                this.init();
                 cc.log("restart")
-                //this.gamePlaying.active = false;
+                //this.gameOver.active = false;
                 this.gameState = config.gameState.READY;
                 this.removeAllBullet()
+                this.removeAllEnemy()
+                this.removeHero()
+                this.init();
                 break;
         }
     },

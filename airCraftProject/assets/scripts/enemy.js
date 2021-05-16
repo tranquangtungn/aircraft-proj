@@ -8,8 +8,9 @@ cc.Class({
         hit_frame: cc.SpriteFrame,
         hp: 5,
         speed: {
-            default: 1,
-            serializable: false
+            set: function (value) {
+                this._speed = value;
+            },
         },
 
         score: 1,
@@ -17,26 +18,22 @@ cc.Class({
         _anim: null,
         _gameState: null,
         _updateGameState: null,
-        _speed: 5,
+
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        //cc.log(this)
         this._gameState = config.gameState.PLAYING
         this._sprite = this.getComponent(cc.Sprite)
         this.colider = this.getComponent(cc.PolygonCollider)
         this._anim = this.getComponent(cc.Animation)
         this._updateGameState = this.updateGameState.bind(this)
         mEmitter.instance.registerEvent(config.event.UPDATE_GAMESTATE, this._updateGameState)
-        //cc.log(this.colider)
-        this.speed = Math.floor(Math.random() * 5) + 2;
     },
     updateGameState(data) {
         this._gameState = data
-        //cc.log("change state")
-        if (data == config.gameState.PAUSE)
+        if (data != config.gameState.PLAYING)
             this._anim.stop()
         else
             this._anim.start()
@@ -44,7 +41,6 @@ cc.Class({
     onEnemyKilled() {
         mEmitter.instance.removeEvent(config.event.UPDATE_GAMESTATE, this._updateGameState)
         this.node.destroy();
-
     },
     onCollisionEnter: function (other, self) {
         if (other.node.group == "bullet") {
@@ -54,7 +50,6 @@ cc.Class({
                 cc.tween(this.node)
                     .delay(1)
                     .call(() => {
-
                         mEmitter.instance.emit(config.event.UPDATE_SCORE, this.score)
                         this.onEnemyKilled()
                     })
@@ -67,12 +62,10 @@ cc.Class({
         }
     },
     start() {
-
     },
-
     update(dt) {
         if (this._gameState == config.gameState.PLAYING)
-            this.node.y -= this.speed;
+            this.node.y -= this._speed;
         if (this.node.y <= -550) {
             this.onEnemyKilled()
         }

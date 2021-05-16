@@ -2,7 +2,8 @@ let config = {
     event: {
         UPDATE_SCORE: "changeScore",
         UPDATE_GAMESTATE: "updateGameState",
-        REMOVE_BULLET: "updateGameState"
+        REMOVE_BULLET: "updateGameState",
+        GAME_OVER: "over"
     },
     gameState: {
         READY: "ready",

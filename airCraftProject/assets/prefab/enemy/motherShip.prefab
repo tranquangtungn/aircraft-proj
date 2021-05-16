@@ -18,7 +18,7 @@
     "_parent": null,
     "_children": [],
     "_active": true,
-    "_level": 4,
+    "_level": 1,
     "_components": [
       {
         "__id__": 2
@@ -816,11 +816,11 @@
       "__uuid__": "ea1b965c-8db0-4ae3-9111-b29ba47ee56e"
     },
     "hp": 10,
-    "speed": 1,
     "score": 5,
     "_sprite": null,
     "_anim": null,
     "_gameState": "playing",
+    "_updateGameState": null,
     "_id": ""
   },
   {
@@ -829,7 +829,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "8eda0766-f8d2-4688-b39a-1ce37680e294"
     },
     "fileId": "2ddi1HuvVJqqQOpR/TzfDe",
     "sync": false

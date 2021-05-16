@@ -263,7 +263,7 @@
     "_sprite": null,
     "_anim": null,
     "_gameState": "playing",
-    "_speed": 0,
+    "_updateGameState": null,
     "_id": ""
   },
   {
