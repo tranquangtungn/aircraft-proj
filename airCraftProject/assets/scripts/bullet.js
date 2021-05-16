@@ -33,18 +33,22 @@ cc.Class({
         //cc.log(a)
         //cc.log("hello")
         if (other.node.group == "enemy") {
-
-            //cc.log("test")
-            this.node.active = false
-            //cc.log(this.hp)
+            this.onBulletKilled()
 
         }
     },
+    onBulletKilled() {
+        mEmitter.instance.removeEvent(config.event.UPDATE_GAMESTATE, this._updateGameState)
+        this.node.destroy();
+
+    },
     update(dt) {
         // cc.log(this.node.y)
+        // cc.log(this._gameState)
         if (this._gameState == config.gameState.PLAYING)
             this.node.y += this.speed;
-        if (this.node.y >= 460)
-            mEmitter.instance.removeEvent(config.event.UPDATE_GAMESTATE, this._updateGameState)
+        if (this.node.y >= 460) {
+            this.onBulletKilled()
+        }
     },
 });

@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "enemy2",
+    "_name": "assassin",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -56,8 +56,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -11,
-      "y": 8,
+      "x": -21.8,
+      "y": 323,
       "z": 0
     },
     "_scale": {
@@ -416,9 +416,11 @@
       "__uuid__": "9c9b67fe-3be4-48aa-871f-e7eaaaea8ddd"
     },
     "hp": 5,
-    "speed": 0,
-    "sprite": null,
-    "anim_down": null,
+    "speed": 2,
+    "score": 2,
+    "_sprite": null,
+    "_anim": null,
+    "_gameState": "playing",
     "_id": ""
   },
   {

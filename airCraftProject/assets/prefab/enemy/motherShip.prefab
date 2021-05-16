@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "enemy3",
+    "_name": "motherShip",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -57,7 +57,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 137,
-      "y": 16,
+      "y": 377.399,
       "z": 0
     },
     "_scale": {
@@ -794,17 +794,14 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "f88d693d-1e64-437d-9796-2a6c320a21fc"
+      "__uuid__": "1682cc99-42ec-4194-80e6-83761ae4125d"
     },
     "_clips": [
       {
         "__uuid__": "f88d693d-1e64-437d-9796-2a6c320a21fc"
-      },
-      {
-        "__uuid__": "1682cc99-42ec-4194-80e6-83761ae4125d"
       }
     ],
-    "playOnLoad": false,
+    "playOnLoad": true,
     "_id": ""
   },
   {
@@ -819,9 +816,11 @@
       "__uuid__": "ea1b965c-8db0-4ae3-9111-b29ba47ee56e"
     },
     "hp": 10,
-    "speed": 0,
-    "sprite": null,
-    "anim_down": null,
+    "speed": 1,
+    "score": 5,
+    "_sprite": null,
+    "_anim": null,
+    "_gameState": "playing",
     "_id": ""
   },
   {
