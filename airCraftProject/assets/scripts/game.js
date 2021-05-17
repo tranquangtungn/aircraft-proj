@@ -77,7 +77,7 @@ cc.Class({
 
         this.bulletTime = 0;
         this.gameState = config.gameState.READY
-
+        this.score.string = 0;
 
         this.spawnCreepTime = 0
         this.spawnAssasinTime = 0
@@ -98,7 +98,11 @@ cc.Class({
             if (this._hero.name != "") {
                 let pos_hero = this._hero.getPosition()
                 let pos_mov = event.getDelta()
-                this._hero.setPosition(cc.v2(pos_hero.x + pos_mov.x, pos_hero.y + pos_mov.y))
+                let x = pos_hero.x + pos_mov.x
+                let y = pos_hero.y + pos_mov.y
+                if (x < 280 && x > -280)
+                    if (y < 400 && y > -400)
+                        this._hero.setPosition(cc.v2(x, y))
             }
         }, this);
         this.node.on("touchend", function (event) {
